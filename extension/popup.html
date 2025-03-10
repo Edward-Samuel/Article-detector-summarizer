@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Article Detector & Summarizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            width: 400px;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 100%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 15px;
+        }
+        .status {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .article {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .not-article {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .section {
+            margin-top: 20px;
+            position: relative;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .section-title {
+            font-weight: 500;
+            color: #495057;
+        }
+        .copy-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s;
+        }
+        .copy-btn:hover {
+            background-color: #0056b3;
+        }
+        .content, .summary {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.5;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+        }
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+        }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success-message {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            Analyzing page...
+        </div>
+        <div id="result" style="display: none;">
+            <div id="status" class="status"></div>
+            <div id="content-section" class="section">
+                <div class="section-header">
+                    <span class="section-title">Extracted Content</span>
+                    <button class="copy-btn" id="copy-content">Copy Content</button>
+                </div>
+                <div id="content" class="content"></div>
+            </div>
+            <div id="summary-section" class="section">
+                <div class="section-header">
+                    <span class="section-title">Summary</span>
+                    <button class="copy-btn" id="copy-summary">Copy Summary</button>
+                </div>
+                <div id="summary" class="summary"></div>
+            </div>
+        </div>
+    </div>
+    <div id="copy-success" class="success-message">Copied to clipboard!</div>
+    <script src="popup.js"></script>
+</body>
+</html> 
