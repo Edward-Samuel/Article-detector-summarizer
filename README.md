@@ -1,28 +1,61 @@
 # Article Detector & Summarizer Chrome Extension
 
-A Chrome extension that uses machine learning to detect articles on web pages, extract their main content while removing ads and boilerplate, and provide concise summaries.
+A Chrome extension that uses advanced ML models to detect articles on web pages, extract their main content, and provide concise multilingual summaries.
 
 ## Features
 
-- 🔍 **Smart Article Detection**: Uses BERT model to identify article content
-- 📝 **Content Extraction**: Removes ads, navigation, footers, and other non-article content
-- 📚 **Text Summarization**: Generates concise summaries using T5 transformer model
+- 🔍 **Intelligent Article Detection**: Uses multilingual BERT to accurately identify article content across languages
+- 🌐 **Multilingual Support**: Handles 25+ languages with native language understanding
+- 📝 **Smart Summarization**: Generates concise, bullet-pointed summaries using state-of-the-art mBART model
+- 🎯 **Language-Specific Processing**: Custom formatting and handling for CJK, Arabic, Thai, and other languages
 - 🎨 **Clean UI**: Modern, user-friendly interface
 - 📋 **Copy Support**: Easy copying of both extracted content and summaries
 
 ## Technical Stack
 
+### ML Models
+- **Article Detection**: `bert-base-multilingual-cased`
+  - Multilingual BERT model for content classification
+  - Hybrid approach combining ML and structural analysis
+  - Supports multiple languages and content types
+  
+- **Summarization**: `facebook/mbart-large-cc25`
+  - Multilingual BART model trained on 25 languages
+  - Language-aware summarization
+  - Optimized for concise, meaningful summaries
+
 ### Backend
 - Python 3.7+
-- FastAPI for the API server
-- Transformers (BERT & T5) for ML tasks
+- FastAPI for API server
 - BeautifulSoup4 for HTML parsing
 - PyTorch for ML operations
+- Transformers library for BERT and mBART models
 
 ### Frontend
 - Chrome Extension (Manifest V3)
 - Vanilla JavaScript
 - Modern CSS with Flexbox
+
+## Supported Languages
+
+The extension supports summarization in multiple languages including:
+- English (en)
+- Spanish (es)
+- French (fr)
+- German (de)
+- Italian (it)
+- Portuguese (pt)
+- Dutch (nl)
+- Russian (ru)
+- Japanese (ja)
+- Korean (ko)
+- Chinese (zh)
+- Arabic (ar)
+- Hindi (hi)
+- Vietnamese (vi)
+- Thai (th)
+- Turkish (tr)
+- Polish (pl)
 
 ## Installation
 
@@ -63,21 +96,20 @@ The server will run on `http://localhost:8080`.
 1. Navigate to any webpage you want to analyze
 2. Click the extension icon in your Chrome toolbar
 3. The extension will:
-   - Detect if the current page is an article
+   - Detect if the current page contains an article
    - Extract the main content (if it's an article)
-   - Generate a summary (if it's an article)
+   - Generate a multilingual summary with bullet points
 4. Use the copy buttons to copy either the extracted content or the summary
 
 ## Project Structure
 
 ```
 ├── api.py                 # FastAPI server
-├── article_classifier.py  # Article detection & content extraction
-├── text_summarizer.py    # Text summarization model
-├── requirements.txt      # Python dependencies
-├── extension/           # Chrome extension files
-│   ├── manifest.json    # Extension configuration
-│   ├── popup.html      # Extension popup UI
+├── text_summarizer.py     # ML models and text processing
+├── requirements.txt       # Python dependencies
+├── extension/            # Chrome extension files
+│   ├── manifest.json     # Extension configuration
+│   ├── popup.html       # Extension popup UI
 │   ├── popup.js        # Extension logic
 │   └── content.js      # Content script
 └── README.md           # This file
@@ -85,9 +117,23 @@ The server will run on `http://localhost:8080`.
 
 ## Model Details
 
-- **Article Detection**: Fine-tuned BERT model for binary classification
-- **Content Extraction**: Rule-based + ML hybrid approach using BeautifulSoup4
-- **Summarization**: T5 transformer model optimized for summarization
+### Article Detection Model (Multilingual BERT)
+- Base model: bert-base-multilingual-cased
+- Task: Binary classification (article/non-article)
+- Features:
+  - Multilingual support
+  - HTML structure analysis
+  - Content-based classification
+  - Confidence threshold: 0.6
+
+### Summarization Model (mBART)
+- Base model: facebook/mbart-large-cc25
+- Task: Multilingual text summarization
+- Features:
+  - Native support for 25 languages
+  - Language-specific processing
+  - Bullet point formatting
+  - Custom prompt handling per language
 
 ## Contributing
 
@@ -104,6 +150,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Acknowledgments
 
 - HuggingFace Transformers library
-- BERT and T5 model creators
+- BERT and mBART model creators
 - FastAPI framework
 - Chrome Extensions documentation 
