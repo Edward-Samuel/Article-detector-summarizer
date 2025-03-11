@@ -2,13 +2,21 @@ import torch
 from transformers import BertTokenizer, BertForSequenceClassification
 from bs4 import BeautifulSoup
 import re
+from langdetect import detect
 
 class ArticleClassifier:
     def __init__(self):
-        self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-        self.model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=2)
+        self.model_name = "bert-base-multilingual-uncased"  # Multilingual BERT
+        self.tokenizer = BertTokenizer.from_pretrained(self.model_name)
+        self.model = BertForSequenceClassification.from_pretrained(self.model_name, num_labels=2)
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model.to(self.device)
+        
+    def detect_language(self, text):
+        try:
+            return detect(text)
+        except:
+            return 'en'  # Default to English if detection fails
         
     def preprocess_text(self, html_content):
         # Parse HTML and extract text
@@ -90,9 +98,12 @@ class ArticleClassifier:
         # Extract main content first
         main_content = self.extract_main_content(html_content)
         
+        # Detect language
+        lang = self.detect_language(main_content) if main_content else 'en'
+        
         # If we have strong structural indicators and substantial content, it's likely an article
         if sum(article_indicators.values()) >= 3 and len(main_content) > 500:
-            return True, main_content
+            return True, main_content, lang
             
         # Fallback to BERT classification for ambiguous cases
         text = self.preprocess_text(html_content)
@@ -113,9 +124,9 @@ class ArticleClassifier:
         is_article = predictions[0][1].item() > 0.5
         
         if is_article and main_content:
-            return True, main_content
+            return True, main_content, lang
         
-        return False, ""
+        return False, "", lang
 
     def train(self, train_data):
         """

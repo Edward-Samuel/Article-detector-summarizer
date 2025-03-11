@@ -9,6 +9,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const copySuccess = document.getElementById('copy-success');
     const contentSection = document.getElementById('content-section');
     const summarySection = document.getElementById('summary-section');
+    const contentLang = document.getElementById('content-lang');
+    const summaryLang = document.getElementById('summary-lang');
+
+    // Language name mapping
+    const languageNames = {
+        'en': 'English',
+        'es': 'Spanish',
+        'fr': 'French',
+        'de': 'German',
+        'it': 'Italian',
+        'pt': 'Portuguese',
+        'nl': 'Dutch',
+        'ru': 'Russian',
+        'ja': 'Japanese',
+        'ko': 'Korean',
+        'zh': 'Chinese',
+        'ar': 'Arabic',
+        'hi': 'Hindi'
+    };
+
+    function getLanguageName(code) {
+        return languageNames[code] || code;
+    }
 
     // Copy functionality
     function showCopySuccess() {
@@ -75,6 +98,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     content.textContent = data.content;
                     contentSection.style.display = 'block';
+                    
+                    if (data.language) {
+                        const langName = getLanguageName(data.language);
+                        contentLang.textContent = langName;
+                        summaryLang.textContent = langName;
+                    }
                     
                     if (data.summary) {
                         summary.textContent = data.summary;
